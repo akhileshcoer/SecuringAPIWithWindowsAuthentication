@@ -19,7 +19,7 @@ namespace SecuringAPIWithWindowsAuthentication.Controllers
     {
         [HttpGet("myroles")]
         public async Task<IActionResult> GetMyRoles()
-        {
+        {            
             var groups = new List<string>();
             if (HttpContext.User.Identity.IsAuthenticated && HttpContext.User.Identity is WindowsIdentity)
             {

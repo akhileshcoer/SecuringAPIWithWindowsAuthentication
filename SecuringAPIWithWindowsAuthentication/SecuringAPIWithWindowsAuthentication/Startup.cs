@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,8 @@ namespace SecuringAPIWithWindowsAuthentication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+            services.AddAuthorization();
             services.AddMvc();
         }
 
@@ -36,6 +39,12 @@ namespace SecuringAPIWithWindowsAuthentication
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCors(builder => 
+            builder
+            .WithOrigins("http://localhost:4200")
+            .WithHeaders("Origin, Content-Type, X-Auth-Token")
+            .WithMethods("GET, POST, PATCH, PUT, DELETE, OPTIONS").AllowCredentials());
 
             app.UseStaticFiles();
 
