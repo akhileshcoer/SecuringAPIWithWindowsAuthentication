@@ -19,7 +19,7 @@ namespace SecuringAPIWithWindowsAuthentication.Controllers
     {
         [HttpGet("myroles")]
         public async Task<IActionResult> GetMyRoles()
-        {            
+        {
             var groups = new List<string>();
             if (HttpContext.User.Identity.IsAuthenticated && HttpContext.User.Identity is WindowsIdentity)
             {
@@ -42,15 +42,15 @@ namespace SecuringAPIWithWindowsAuthentication.Controllers
 
             return await Task.FromResult(new ObjectResult(groups));
         }
-        
-        [Authorize(Roles = "Administrator")]
+
+        [Authorize("Administrator")]
         [HttpGet("AdminGet")]
         public async Task<IActionResult> AdminGetAsync()
         {
             return await Task.FromResult(new ObjectResult(new Entity() { Name = "administrator role" }));
         }
-
-        [Authorize(Roles = "ALI\\ATIN-FC-Systems-Dev")]
+                
+        [Authorize("Administrator,ALI\\ATIN-FC-Systems-Dev")]
         [HttpGet("OtherGet")]
         public async Task<IActionResult> OtherGetAsync()
         {

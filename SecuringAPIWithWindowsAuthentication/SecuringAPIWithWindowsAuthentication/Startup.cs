@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SecuringAPIWithWindowsAuthentication
 {
@@ -23,7 +24,24 @@ namespace SecuringAPIWithWindowsAuthentication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(IISDefaults.AuthenticationScheme);
-            services.AddAuthorization();
+
+            services.AddAuthorization(options =>
+            {
+                options.InvokeHandlersAfterFailure = true;
+                options.AddPolicy("Administrator", policy =>
+                {
+                    policy.Requirements.Add(new SinglePolicyRequirement("Administrator"));
+                });
+
+                options.AddPolicy("ALI\\ATIN-FC-Systems-Dev", policy =>
+                {
+                    policy.Requirements.Add(new SinglePolicyRequirement("ALI\\ATIN-FC-Systems-Dev"));
+                });
+
+            });
+            services.AddSingleton<IAuthorizationHandler, SinglePolicyHandler>();
+            services.AddSingleton<IAuthorizationHandler, MultipleOrPolicyHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
             services.AddMvc();
         }
 
@@ -40,7 +58,7 @@ namespace SecuringAPIWithWindowsAuthentication
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseCors(builder => 
+            app.UseCors(builder =>
             builder
             .WithOrigins("http://localhost:4200")
             .WithHeaders("Origin, Content-Type, X-Auth-Token")
