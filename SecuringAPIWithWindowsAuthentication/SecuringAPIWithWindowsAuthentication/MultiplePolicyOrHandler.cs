@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace SecuringAPIWithWindowsAuthentication
 {
-    public class MultipleOrPolicyHandler : AuthorizationHandler<MultipleOrPolicyRequirement>
+    public class MultiplePolicyOrHandler : AuthorizationHandler<MultiplePolicyOrRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MultipleOrPolicyRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MultiplePolicyOrRequirement requirement)
         {            
             if (context.User.Identity.IsAuthenticated && context.User.Identity is WindowsIdentity)
             {

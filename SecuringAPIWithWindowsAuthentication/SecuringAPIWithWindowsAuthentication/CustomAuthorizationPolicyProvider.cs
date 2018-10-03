@@ -37,7 +37,7 @@ namespace SecuringAPIWithWindowsAuthentication
                 var combineAuthPolicy = new AuthorizationPolicy(
                     new List<IAuthorizationRequirement>
                     {
-                        new MultipleOrPolicyRequirement(singlePolicies)
+                        new MultiplePolicyOrRequirement(singlePolicies)
                     },
                     new List<string>());
 

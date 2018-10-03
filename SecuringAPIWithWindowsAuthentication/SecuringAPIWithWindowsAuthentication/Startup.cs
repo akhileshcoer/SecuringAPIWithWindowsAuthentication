@@ -40,7 +40,7 @@ namespace SecuringAPIWithWindowsAuthentication
 
             });
             services.AddSingleton<IAuthorizationHandler, SinglePolicyHandler>();
-            services.AddSingleton<IAuthorizationHandler, MultipleOrPolicyHandler>();
+            services.AddSingleton<IAuthorizationHandler, MultiplePolicyOrHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
             services.AddMvc();
         }

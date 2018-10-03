@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace SecuringAPIWithWindowsAuthentication
 {
-    public class MultipleOrPolicyRequirement : IAuthorizationRequirement
+    public class MultiplePolicyOrRequirement : IAuthorizationRequirement
     {
         public IList<SinglePolicyRequirement> Policies { get; set; }
 
-        public MultipleOrPolicyRequirement(IList<SinglePolicyRequirement> policies)
+        public MultiplePolicyOrRequirement(IList<SinglePolicyRequirement> policies)
         {
             Policies = policies;
         }
